@@ -51,15 +51,6 @@ RUN ["mvn", "--version" ]
 RUN ["echo", "$JAVA_HOME"]
 RUN ["java", "--version"]
 
-# Test Maven
-RUN mkdir /root/.m2
-COPY test/settings.xml /root/.m2/settings.xml
-COPY test /root/test
-RUN cd /root/test && mvn deploy
-RUN rm -Rf /root/.m2
-
-
-
 COPY start.sh /usr/bin
 RUN chmod a+x /usr/bin/start.sh
 
