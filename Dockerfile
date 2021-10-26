@@ -1,12 +1,13 @@
 FROM localstack/localstack
 
 # Install Build Tools
-RUN apk update
-RUN apk upgrade
-RUN apk --no-cache add build-base bash g++ gcc musl-dev openssl go git perl openssh curl python3 py3-pip docker docker-compose openjdk11 openjdk11-jre
+RUN apk update && apk upgrade && apk --no-cache add build-base bash g++ gcc musl-dev openssl go git perl openssh curl openjdk11 python3 py3-pip openjdk11-jre
+
+# Hack to allow for python3.7 interpreter in Localstack scripts
+RUN ln -s /usr/bin/python3 /usr/bin/python3.7
 
 # Install Terraform
-RUN curl -fSL https://releases.hashicorp.com/terraform/1.0.7/terraform_1.0.7_linux_amd64.zip -o terraform.zip
+RUN curl -fSL https://releases.hashicorp.com/terraform/1.0.9/terraform_1.0.9_linux_amd64.zip -o terraform.zip
 RUN unzip terraform -d /opt/terraform
 RUN ln -s /opt/terraform/terraform /usr/bin/terraform
 RUN rm -f terraform.zip
@@ -50,15 +51,6 @@ RUN ["go", "version"]
 RUN ["mvn", "--version" ]
 RUN ["echo", "$JAVA_HOME"]
 RUN ["java", "--version"]
-
-# Test Maven
-RUN mkdir /root/.m2
-COPY test/settings.xml /root/.m2/settings.xml
-COPY test /root/test
-RUN cd /root/test && mvn deploy
-RUN rm -Rf /root/.m2
-
-
 
 COPY start.sh /usr/bin
 RUN chmod a+x /usr/bin/start.sh

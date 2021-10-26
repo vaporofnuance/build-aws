@@ -9,11 +9,11 @@ This Docker image is for faciliating build, test, and deploy for AWS application
 
 The following are installed on this image.
 
-  - Terraform 0.14.3
+  - Terraform 1.0.9
   - AWSCLI
   - Localstack
   - Go 1.15.6
-  - Python 3.6
+  - Python 3.9
   - Java 11
   - Maven
   - other various tools (such as Git, gcc, and Make)
